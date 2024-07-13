@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCR BELL - SUPER AWESOME INNOVATION FOR BLIND</title>
+  <style>
+    .container {
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+      background-color: pink; /* Because why not? */
+    }
+    h1 {
+      font-family: 'Comic Sans MS', cursive; /* A must-have for serious web developers */
+      color: purple; /* Just to make it pop */
+      text-shadow: 2px 2px 4px #000000; /* Fancy text effect */
+    }
+    button {
+      background-color: yellow;
+      border: 2px solid orange;
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: orange; /* Because we like surprises */
+      color: yellow;
+    }
+    .uploaded-image {
+      max-width: 100%;
+      margin-top: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Fancy shadow for the image */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔔 OCR BELL - SUPER AWESOME INNOVATION FOR BLIND 🔔</h1>
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="uploadImage()">CLICK HERE TO UPLOAD AN IMAGE, LIKE A BOSS</button>
+    <img id="annotatedImage" class="uploaded-image" style="display:none;" alt="Annotated Image">
+  </div>
+
+  <script>
+    async function uploadImage() {
+      const fileInput = document.getElementById('imageInput');
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert('Hey! You forgot to select an image, silly! 🤦‍♂️');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch('http://127.0.0.1:8000/upload_image_with_braille', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error('Oops! Something went wrong on our end. Try again later!');
+        }
+
+        const data = await response.json();
+        displayImage(data.image);
+      } catch (error) {
+        console.error('Error:', error.message);
+        alert('Yikes! We messed up. Please try again.');
+      }
+    }
+
+    function displayImage(imageData) {
+      const imgElement = document.getElementById('annotatedImage');
+      imgElement.src = `data:image/png;base64,${imageData}`;
+      imgElement.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
