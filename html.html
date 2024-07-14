@@ -58,7 +58,7 @@
       formData.append('file', file);
 
       try {
-        const response = await fetch('https://necessary-kelsi-k4m1kxm1-94c7434b.koyeb.app/upload_image_with_braille', {
+        const response = await fetch('http://127.0.0.1:8000/upload_image_with_braille', {
           method: 'POST',
           body: formData
         });
